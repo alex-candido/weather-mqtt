@@ -1,0 +1,18 @@
+[project]
+name = "esp32_simulator"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Alex Candido", email = "alex.candido.tec@gmail.com"},
+]
+dependencies = ["requests>=2.32.4", "paho-mqtt>=2.1.0"]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+start = "python src/esp32_simulator/weather_simulator.py"
