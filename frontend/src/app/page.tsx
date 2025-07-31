@@ -52,8 +52,9 @@ export default function Home() {
       const response = await axios.get<SensorData[]>(`${API_BASE_URL}/sensor_data/latest/?station_id=${STATION_ID}`);
       return response.data;
     },
-    refetchInterval: 15000, // Refetch a cada 15 segundos
+    refetchInterval: 3000, // Refetch a cada 15 segundos
     staleTime: 0, // Dados sempre considerados 'stale'
+    enabled: true, 
   });
 
   // Query para buscar o número de registros
@@ -63,7 +64,8 @@ export default function Home() {
       const response = await axios.get<RecordCountResponse>(`${API_BASE_URL}/sensor_data/record_count/?station_id=${STATION_ID}`);
       return response.data;
     },
-    refetchInterval: 60000, // Refetch a cada 60 segundos
+    refetchInterval: 3000, // Refetch a cada 60 segundos
+    enabled: true, 
   });
 
   // Query para buscar a previsão de temperatura
@@ -73,7 +75,8 @@ export default function Home() {
       const response = await axios.get<TemperaturePredictionResponse>(`${API_BASE_URL}/sensor_data/temperature_prediction/?station_id=${STATION_ID}`);
       return response.data;
     },
-    refetchInterval: 60000, // Refetch a cada 60 segundos
+    refetchInterval: 3000, // Refetch a cada 60 segundos
+    enabled: true, 
   });
 
   const error = errorStation || errorSensorData || errorRecordCount || errorTempPrediction;

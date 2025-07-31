@@ -5,7 +5,14 @@ description = "Default template for PDM package"
 authors = [
     {name = "Alex Candido", email = "alex.candido.tec@gmail.com"},
 ]
-dependencies = ["django>=5.2.4", "paho-mqtt>=2.1.0", "djangorestframework>=3.16.0", "django-cors-headers>=4.7.0"]
+dependencies = [
+    "django>=5.2.4",
+    "paho-mqtt>=2.1.0",
+    "djangorestframework>=3.16.0",
+    "django-cors-headers>=4.7.0",
+    "django-filter>=24.2", # Adicionado para filtragem de API
+]
+
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "MIT"}

@@ -9,11 +9,12 @@ from datetime import datetime, timezone
 # MQTT Broker
 MQTT_BROKER = "broker.hivemq.com"
 MQTT_PORT = 1883
-MQTT_TOPIC = "estacao/sensores"
+MQTT_TOPIC = "station/sensors"
 
 # Estação Meteorológica
-STATION_ID = "STATION_FORTALEZA_001"
-CITY_NAME = "Fortaleza"
+# TODO: Make STATION_ID dynamic (e.g., from env var or command line arg)
+STATION_ID = "d17b5b3e-5c67-4231-9a84-4b18d72f0e56"
+CITY_NAME = "Fortaleza" # Keep for now, but it's not used in the final payload location
 LATITUDE = -3.73
 LONGITUDE = -38.52
 
@@ -22,7 +23,7 @@ API_URL = "https://api.open-meteo.com/v1/forecast"
 PARAMS = {
     "latitude": LATITUDE,
     "longitude": LONGITUDE,
-    "current": ["temperature_2m", "relative_humidity_2m", "precipitation", "wind_speed_10m"],
+    "current": ["temperature_2m", "relative_humidity_2m", "precipitation", "wind_speed_10m", "shortwave_radiation"],
     "wind_speed_unit": "ms"
 }
 
@@ -31,27 +32,33 @@ PARAMS = {
 SENSOR_DEFINITIONS = [
     {
         "name": "thermometer_230",
-        "type": "temperature",
+        "type": "thermometer", # Changed from "temperature"
         "api_key": "temperature_2m",
         "unit": "°C"
     },
     {
         "name": "hygrometer_597",
-        "type": "humidity",
+        "type": "hygrometer", # Changed from "humidity"
         "api_key": "relative_humidity_2m",
         "unit": "%"
     },
     {
         "name": "anemometer_588",
-        "type": "wind_speed",
+        "type": "anemometer", # Changed from "wind_speed"
         "api_key": "wind_speed_10m",
         "unit": "m/s"
     },
     {
         "name": "pluviometer_318",
-        "type": "rain",
+        "type": "pluviometer", # Changed from "rain"
         "api_key": "precipitation",
         "unit": "mm"
+    },
+    {
+        "name": "solarimeter_999",
+        "type": "solarimeter",
+        "api_key": "shortwave_radiation",
+        "unit": "W/m²"
     }
 ]
 
@@ -117,7 +124,6 @@ def main():
                     full_payload = {
                         "station_id": STATION_ID,
                         "location": {
-                            "city": CITY_NAME,
                             "latitude": LATITUDE,
                             "longitude": LONGITUDE
                         },
@@ -125,7 +131,7 @@ def main():
                         "sensors": sensors_payload
                     }
 
-                    json_payload = json.dumps(full_payload, indent=2)
+                    json_payload = json.dumps(full_payload, indent=2, ensure_ascii=False)
 
                     result = client.publish(MQTT_TOPIC, json_payload)
                     result.wait_for_publish()
